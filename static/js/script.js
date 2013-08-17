@@ -1,10 +1,10 @@
 $(function(){
     var dbs = [
-        {
-            'label': 'naa',
-            'heading': 'National Archives of Australia',
-            'results_per_page': 20
-        },
+        //{
+        //    'label': 'naa',
+        //    'heading': 'National Archives of Australia',
+        //    'results_per_page': 20
+        //},
         {
             'label': 'cwgc',
             'heading': 'Commonwealth War Graves Commission',
