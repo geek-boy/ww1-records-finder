@@ -130,7 +130,7 @@ $(function(){
         } else if (label == 'cwgc') {
             do_cwgc_search(db, page);
         } else if (label == 'awm-roll' || label == 'awm-embarkation' || label == 'awm-redcross' || label == 'awm-awards' ) {
-            do_awm_search(db, page);
+            do_awm_search(db, page-1);
         }
     }
     function prepare_results_div(type, heading) {
@@ -258,9 +258,9 @@ $(function(){
         } else {
             name = family_name;
         }
-        $.getJSON($SCRIPT_ROOT + '/awm/' + db.path + '/search/', {'Name': name, 'ServiceNumber': service_number, 'page': page}, function(data) {
+        $.getJSON($SCRIPT_ROOT + '/awm/' + db.path + '/search/', {'preferred_name': name, 'service_number': service_number, 'page': page}, function(data) {
             $('#' + db.label + '-status').remove();
-            $results.append(page_navigation(db, page, data.total_results));
+            $results.append(page_navigation(db, page+1, data.total_results));
             var $results_table = $('<table class="table table-striped"></table>');
             $.each(data.results, function(key, result) {
                 var unit;

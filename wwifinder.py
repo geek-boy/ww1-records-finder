@@ -77,14 +77,13 @@ def search_awm_dbs(db):
     kwargs = request.args.to_dict()
     kwargs['db'] = db
     if db == 'honours_and_awards':
-        kwargs['Authority'] = 'First World War'
-    else:
-        kwargs['Conflict'] = 'First World War'
+        kwargs['roll_type'] = 'All'
+    kwargs['conflict'] = 'First World War, 1914-1918'
     results = awm.search(**kwargs)
     return jsonify(results)
 
 
-@app.route('/awm/items/<path:url>/')
+@app.route('/awm/items/<path:url>')
 def get_awm_item(url):
     url = re.sub(r'person\.asp\/', 'person.asp?p=', url)
     url = url.replace('http:/w', 'http://w')
