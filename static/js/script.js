@@ -1,10 +1,10 @@
 $(function(){
     var dbs = [
-        //{
-        //    'label': 'naa',
-        //    'heading': 'National Archives of Australia',
-        //    'results_per_page': 20
-        //},
+        {
+           'label': 'naa',
+            'heading': 'National Archives of Australia',
+            'results_per_page': 20
+        },
         {
             'label': 'cwgc',
             'heading': 'Commonwealth War Graves Commission',
@@ -14,25 +14,29 @@ $(function(){
             'label': 'awm-roll',
             'heading': 'Australian War Memorial &ndash; Roll of Honour',
             'results_per_page': 50,
-            'path': 'roll_of_honour'
+            'path': 'roll_of_honour',
+            'roll': 'roll_of_honour'
         },
         {
             'label': 'awm-embarkation',
             'heading': 'Australian War Memorial &ndash; Embarkation Roll',
             'results_per_page': 50,
-            'path': 'nominal_rolls/first_world_war_embarkation'
+            'path': 'nominal_rolls/first_world_war_embarkation',
+            'roll': 'embarkation'
         },
         {
             'label': 'awm-redcross',
             'heading': 'Australian War Memorial &ndash; Red Cross Wounded &amp; Missing',
             'results_per_page': 50,
-            'path': 'wounded_and_missing'
+            'path': 'wounded_and_missing',
+            'roll': 'wounded_and_missing'
         },
         {
             'label': 'awm-awards',
             'heading': 'Australian War Memorial &ndash; Honours &amp; Awards',
             'results_per_page': 50,
-            'path': 'honours_and_awards'
+            'path': 'honours_and_awards',
+            'roll': 'honours_and_awards'
         }
     ];
     var family_name, other_names, service_number;
@@ -269,7 +273,7 @@ $(function(){
                 } else {
                     unit = result.roll_title;
                 }
-                var $title = $('<h5><a href="#" data-id="' + result.url + '">' + result.name + ' : Service number ' + result.service_number + ' : ' + unit + ' <i class="icon-plus-sign"></a></i></h5>');
+                var $title = $('<h5><a href="#" data-roll="' + db.roll + '" data-id="' + result.url + '">' + result.name + ' : Service number ' + result.service_number + ' : ' + unit + ' <i class="icon-plus-sign"></a></i></h5>');
                 $title.click(function(event) {
                     event.preventDefault();
                     if ($('.item-details', $(this).parent()).length === 0 || $('.item-details', $title.parent()).is(':hidden')) {
@@ -290,11 +294,12 @@ $(function(){
     function get_awm_item(elem) {
         var url = $('a', elem).data('id');
         var id = url.replace('?p=', '/');
+        var roll = $('a', elem).data('roll');
         var $cell = elem.parent();
         if ($('.item-details', $cell).length === 0) {
             $details = $('<div />').addClass('item-details').html('<img src="static/img/loader.gif"> Retrieving item details...');
             $cell.append($details);
-            $.getJSON($SCRIPT_ROOT + '/awm/items/' + id + '/', function(data) {
+            $.getJSON($SCRIPT_ROOT + '/awm/items/' + roll + '/' + id + '/', function(data) {
                 $cell.parent().siblings().hide();
                 $('i', elem).removeClass('icon-plus-sign').addClass('icon-minus-sign');
                 $details.empty();

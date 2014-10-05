@@ -10,8 +10,8 @@ from cwgctools.client import CWGCClient
 from awmtools.client import AWMBioSearchClient, RollClient, EmbarkationClient, RedCrossClient, HonoursClient
 
 
-#CONTEXT = 'local'
-CONTEXT = 'production'
+CONTEXT = 'local'
+#CONTEXT = 'production'
 
 
 app = Flask(__name__)
@@ -40,6 +40,7 @@ def search_naa():
     kwargs = request.args.to_dict()
     kwargs['page'] = request.args.get('page', 1)
     kwargs['sort'] = 3
+    print kwargs
     results = rs.search_names(**kwargs)
     return jsonify(results)
 
@@ -83,17 +84,17 @@ def search_awm_dbs(db):
     return jsonify(results)
 
 
-@app.route('/awm/items/<path:url>')
-def get_awm_item(url):
+@app.route('/awm/items/<path:roll>/<path:url>')
+def get_awm_item(roll, url):
     url = re.sub(r'person\.asp\/', 'person.asp?p=', url)
     url = url.replace('http:/w', 'http://w')
-    if 'roll_of_honour' in url:
+    if 'roll_of_honour' in roll:
         awm = RollClient()
-    elif 'embarkation' in url:
+    elif 'embarkation' in roll:
         awm = EmbarkationClient()
-    elif 'wounded_and_missing' in url:
+    elif 'wounded_and_missing' in roll:
         awm = RedCrossClient()
-    elif 'honours_and_awards' in url:
+    elif 'honours_and_awards' in roll:
         awm = HonoursClient()
     result = awm.get_details(url=url)
     return jsonify({'result': result})
